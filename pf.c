@@ -4,7 +4,7 @@
 int curva(int a, int b, int p);
 int powmod(int a, int x,int p);
 int convertirModulo(int num,int mod);
-
+//hola 
 int main(int argc, char const *argv[])
 {
 	int *punto;
