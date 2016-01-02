@@ -1,0 +1,36 @@
+1) Descargar protobuf-2.6.1 desde: https://developers.google.com/protocol-buffers/docs/downloads
+
+2) Descomrpimir
+3) Entrar a la carpeta
+4) Ejecutar  
+	$ ./configure --prefix=/usr
+	$ make
+    $ make check
+5) Después de ejecutar make check, debería aparecer algo como esto:
+================================================================
+Testsuite summary for Protocol Buffers 2.6.1
+================================================================
+# TOTAL: 5
+# PASS:  5
+# SKIP:  0
+# XFAIL: 0
+# FAIL:  0
+# XPASS: 0
+# ERROR: 0
+====================================================================
+
+6) Ejecutar
+	$ sudo make install
+
+**************************
+* Para compilar **********
+**************************
+
+Prototipo de mensaje:
+	Generar en el mismo directorio:
+		$ protoc message.proto --cpp_out=.       
+
+
+Archivo que haga uso de mensajes y métodos de protobuf
+	$ g++ -I /usr/include -L /usr/lib  Cliente.cpp message.pb.cc -lprotobuf -pthread
+

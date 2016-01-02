@@ -1,0 +1,38 @@
+message Mensaje{
+  required int32 msg_id = 1;
+  oneof msjsControl{
+      DiffieParams dprms = 2;
+      DiffiePunto  dpt   = 3;
+      MSJSesion    msgsn = 4;
+      MSJDialogo   msgd  = 5;
+  }
+}
+
+//Mensaje de parámetros iniciales
+message DiffieParams {
+  required  int32 p = 1;
+  required  int32 a = 2;
+  required  int32 b = 3;
+  required  int32 G_x = 4;
+  required  int32 G_y = 5;
+  required  int32 n = 6;
+  required  int32 h = 7;
+}
+
+//Mensaje para intercambio de puntos
+message DiffiePunto {
+  required int32  x_val = 1;
+  required int32  y_val = 2;
+}
+
+//Mensaje de estado de sesión
+message MSJSesion{
+  required int32 idEvento = 1;
+  optional string usuario = 2;
+}
+
+//Mensaje para intercambio de datos
+message MSJDialogo{
+  required string  msg = 1;
+}
+
