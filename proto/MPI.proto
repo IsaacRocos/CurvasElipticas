@@ -23,6 +23,7 @@ message DiffieParams {
 message DiffiePunto {
   required int32  x_val = 1;
   required int32  y_val = 2;
+  required int32  tipo = 3;
 }
 
 //Mensaje de estado de sesión
@@ -33,6 +34,6 @@ message MSJSesion{
 
 //Mensaje para intercambio de datos
 message MSJDialogo{
-  required string  msg = 1;
+  required bytes  msg = 1;
 }
 
