@@ -1,5 +1,5 @@
 /*
-* Anfitrion. Se ejecuta cuando el usuario espera a alguien para chatear.
+* Anfitrion. Se ejecuta cuando el usuario espera a alguien para chatear. 
 */
 
 #include "h/Chat.h"
