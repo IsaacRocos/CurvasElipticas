@@ -1,6 +1,8 @@
-#include "h/Chat.h"
-#include "h/Mensaje.h"
+/*
+* Anfitrion. Se ejecuta cuando el usuario espera a alguien para chatear.
+*/
 
+#include "h/Chat.h"
 
 int main(int argv, char** argc){
         int host_port= 1101;
@@ -14,6 +16,20 @@ int main(int argv, char** argc){
         sockaddr_in sadr;
         pthread_t thread_id=5;
         pthread_t thread_id1=0;
+
+        //Parametros Diffie
+        int g_xi=0, g_yi=0;
+        int pi=113; 
+        int ai=5; 
+        int bi=7;
+
+        //---------------
+
+        if (argv<=1){
+            setMostrarFlujo(0);
+        }else{
+            setMostrarFlujo(atoi(argc[1]));
+        }
 
         hsock = socket(AF_INET, SOCK_STREAM, 0);
         if(hsock == -1){
@@ -60,7 +76,31 @@ int main(int argv, char** argc){
                         Mensaje mensaje = mkMsMSJSesion(1,usuario);
                         char* paquete = serializarMensaje(&mensaje,&tamanioMSG);
                         enviar_Mensaje(cSocket,paquete,&tamanioMSG);
-                        //Escuchar y enviar mensajes
+
+                        //Calcular Punto Generador
+                        curva(ai,bi,pi,&g_xi,&g_yi);
+                        //Enviar  DiffieParams 
+                        
+                        Mensaje mensajeDiffie = mkMsDiffieParams(pi, ai, bi, g_xi, g_yi, 0, 0);
+                        paquete = serializarMensaje(&mensajeDiffie,&tamanioMSG);
+                        enviar_Mensaje(cSocket,paquete,&tamanioMSG);                        
+                   
+                        // Guardar parametros Diffie
+                        set_parametrosDiffie(pi, ai, bi, g_xi,  g_yi);
+
+                        printf("P**: (%d,%d)\n",g_xi,g_yi );
+                        //Calcular punto publico  B' = BG
+                        set_n( escalar(pi) );
+                        
+                        multil1(ai , pi , g_xi , g_yi , get_n() , get_pxPub() , get_pyPub());
+        
+                        //Generar mensaje DiffiePunto y Enviar punto publico calculado
+                        Mensaje mensajePP = mkMsDiffiePunto(*get_pxPub(), *get_pyPub(),1);
+                        paquete = serializarMensaje(&mensajePP,&tamanioMSG);
+
+                        enviar_Mensaje(cSocket,paquete,&tamanioMSG);
+                       
+                        //Escuchar y enviar mensajes restantes
                         pthread_create(&thread_id,0,&SocketHandler, (void*)cSocket);
                         pthread_create(&thread_id1,0,&conversar, (void*)cSocket);
                         pthread_detach(thread_id);
